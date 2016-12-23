@@ -152,14 +152,26 @@ class SortableGrid extends Component {
 
   onReleaseBlock = (evt, gestureState) => {
     this.returnBlockToOriginalPosition()
-    if (this.state.deleteModeOn && this.state.deletionSwipePercent == 100)
-      this.deleteBlock()
-    else
+    // if (this.state.deleteModeOn && this.state.deletionSwipePercent == 100)
+    //   this.deleteBlock()
+    // else
       this.afterDragRelease()
   }
 
   deleteBlock = () => {
     this.setState({ deleteBlock: this.state.activeBlock })
+    this.blockAnimateFadeOut()
+    .then( () => {
+      this.reorderBlocksAfterDeletion()
+      this.addActiveBlockToDeletedItems()
+      this.reAssessGridRows()
+      this.onDeleteItem({ item: this.itemOrder[ this.state.activeBlock ] })
+      this.afterDragRelease()
+    })
+  }
+
+  deleteBlockByKey = (key) => {
+    this.setState({ activeBlock: key, deleteBlock: key })
     this.blockAnimateFadeOut()
     .then( () => {
       this.reorderBlocksAfterDeletion()
