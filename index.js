@@ -5,7 +5,8 @@ import {
   TouchableWithoutFeedback,
   PanResponder,
   Image,
-  View
+  View,
+  Keyboard,
 } from 'react-native'
 
 import _ from 'lodash'
@@ -314,6 +315,7 @@ class SortableGrid extends Component {
   }
 
   activateDrag = (key) => () => {
+    Keyboard.dismiss();
     this.panCapture = true
     this.onDragStart( this.itemOrder[key] )
     this.setState({ activeBlock: key })
@@ -321,6 +323,7 @@ class SortableGrid extends Component {
   }
 
   handleTap = ({ onTap = NULL_FN, onDoubleTap = NULL_FN }) => () => {
+    Keyboard.dismiss();
     if (this.tapIgnore) this._resetTapIgnoreTime()
     else if (onDoubleTap != null) {
       this.doubleTapWait ? this._onDoubleTap(onDoubleTap) : this._onSingleTap(onTap)
